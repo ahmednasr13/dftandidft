@@ -57,12 +57,12 @@ void DFT(Int16 *inbuf, Int16 *outbuf, COMPLEX *result, Int16 length)
 	
 	for (k = 0; k < length; k++)
 	{ 
-        	result[k].real = 0.0;    
+        result[k].real = 0.0;    
 		result[k].imag = 0.0;
 		
 		for (n = 0; n < N; n++)
-	    	{
-		    	//result[k].real += inbuf[n].real*cos(2*M_PI*k*n/N) + inbuf[n].imag*sin(2*M_PI*k*n/N); 
+	    {
+		    //result[k].real += inbuf[n].real*cos(2*M_PI*k*n/N) + inbuf[n].imag*sin(2*M_PI*k*n/N); 
 			result[k].real += inbuf[n] * cos(2*M_PI*k*n/N);
 			
 			//result[k].imag += inbuf[n].imag*cos(2*M_PI*k*n/N) - inbuf[n].real*sin(2*M_PI*k*n/N);  
