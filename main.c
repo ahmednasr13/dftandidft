@@ -15,7 +15,7 @@ typedef struct
     #define M_PI 3.14159265358979323846
 #endif
 
-#define N 100
+#define N 100		// N-Point DFT
 
 #define NUMBER_OF_PRINTED_ELEMENTS 10
 
