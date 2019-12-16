@@ -1,3 +1,11 @@
+/******************************************************************************
+
+Welcome to GDB Online.
+GDB online is an online comM_PIler and debugger tool for C, C++, Python, PHP, Ruby, 
+C#, VB, Perl, Swift, Prolog, Javascript, Pascal, HTML, CSS, JS
+Code, ComM_PIle, Run and Debug online from anywhere in world.
+
+*******************************************************************************/
 #include <stdio.h>
 #include <math.h>
 
@@ -15,19 +23,23 @@ typedef struct
     #define M_PI 3.14159265358979323846
 #endif
 
-#define N 100		// N-Point DFT
+#define N 100
 
 #define NUMBER_OF_PRINTED_ELEMENTS 10
 
-void dft(Int16 *inbuf, Int16 length);
+void DFT(Int16 *inbuf, Int16 *outbuf, COMPLEX *result, Int16 length);
+void IDFT(COMPLEX *inbuf, Int16 *outbuf, COMPLEX *result, Int16 length);
 
 Int16 res_dft[BUFFSIZE];
 Int16 res_idft[BUFFSIZE];
+COMPLEX dft_complex[BUFFSIZE];
+COMPLEX idft_complex[BUFFSIZE];
 
 int main()
 {
     Int16 input[1000] = {[0] = 21, [1] = 523, [2] = 12};
-    dft(input, BUFFSIZE);
+    DFT(input, res_dft, dft_complex, BUFFSIZE);
+    IDFT(dft_complex, res_idft, idft_complex, BUFFSIZE);
     
     Int16 i;
     printf("Input = \n");
@@ -47,41 +59,45 @@ int main()
     return 0;
 }
 
-void dft(Int16 *inbuf, Int16 length)
+void DFT(Int16 *inbuf, Int16 *outbuf, COMPLEX *result, Int16 length)
 {
-	COMPLEX result[BUFFSIZE];
-	COMPLEX res_inv[BUFFSIZE];
-	Int16 k, n;
+    Int16 k, n;
 	
 	for (k = 0; k < length; k++)
 	{ 
-        	result[k].real = 0.0;    
+        result[k].real = 0.0;    
 		result[k].imag = 0.0;
 		
 		for (n = 0; n < N; n++)
-	    	{
-			//result[k].real += inbuf[n].real*cos(2*M_PI*k*n/N) + inbuf[n].imag*sin(2*M_PI*k*n/N); 
+	    {
+		    //result[k].real += inbuf[n].real*cos(2*M_PI*k*n/N) + inbuf[n].imag*sin(2*M_PI*k*n/N); 
 			result[k].real += inbuf[n] * cos(2*M_PI*k*n/N);
 			
 			//result[k].imag += inbuf[n].imag*cos(2*M_PI*k*n/N) - inbuf[n].real*sin(2*M_PI*k*n/N);  
 			result[k].imag -= inbuf[n] * sin(2*M_PI*k*n/N);
 		}
 		
-		res_dft[k] = roundf(sqrt(result[k].real*result[k].real + result[k].imag*result[k].imag));
+		outbuf[k] = roundf(sqrt(result[k].real*result[k].real + result[k].imag*result[k].imag));
 	}
-		
-	for (n = 0; n < length; n++)
-    	{
-        	res_inv[n].real = 0.0;    
-		res_inv[n].imag = 0.0;
+}
+
+void IDFT(COMPLEX *inbuf, Int16 *outbuf, COMPLEX *result, Int16 length)
+{
+    //COMPLEX result[BUFFSIZE];
+    Int16 k, n;
+    
+    for (n = 0; n < length; n++)
+    {
+        result[n].real = 0.0;    
+		result[n].imag = 0.0;
 		
 		for (k = 0; k < N; k++)
-	    	{
-			res_inv[n].real += (result[k].real * cos(2*M_PI*k*n/N) - result[k].imag * sin(2*M_PI*k*n/N)) / N;
+	    {
+			result[n].real += (inbuf[k].real * cos(2*M_PI*k*n/N) - inbuf[k].imag * sin(2*M_PI*k*n/N)) / N;
 			
-			res_inv[n].imag += (result[k].real * sin(2*M_PI*k*n/N) + result[k].imag * cos(2*M_PI*k*n/N)) / N; 			 
+			result[n].imag += (inbuf[k].real * sin(2*M_PI*k*n/N) + inbuf[k].imag * cos(2*M_PI*k*n/N)) / N; 			 
 		}
 		
-		res_idft[n] = roundf(sqrt(res_inv[n].real*res_inv[n].real + res_inv[n].imag*res_inv[n].imag));
+		outbuf[n] = roundf(sqrt(result[n].real*result[n].real + result[n].imag*result[n].imag));
 	}
 }
