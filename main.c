@@ -1,11 +1,3 @@
-/******************************************************************************
-
-Welcome to GDB Online.
-GDB online is an online comM_PIler and debugger tool for C, C++, Python, PHP, Ruby, 
-C#, VB, Perl, Swift, Prolog, Javascript, Pascal, HTML, CSS, JS
-Code, ComM_PIle, Run and Debug online from anywhere in world.
-
-*******************************************************************************/
 #include <stdio.h>
 #include <math.h>
 
@@ -61,16 +53,16 @@ int main()
 
 void DFT(Int16 *inbuf, Int16 *outbuf, COMPLEX *result, Int16 length)
 {
-    Int16 k, n;
+	Int16 k, n;
 	
 	for (k = 0; k < length; k++)
 	{ 
-        result[k].real = 0.0;    
+        	result[k].real = 0.0;    
 		result[k].imag = 0.0;
 		
 		for (n = 0; n < N; n++)
-	    {
-		    //result[k].real += inbuf[n].real*cos(2*M_PI*k*n/N) + inbuf[n].imag*sin(2*M_PI*k*n/N); 
+	    	{
+		    	//result[k].real += inbuf[n].real*cos(2*M_PI*k*n/N) + inbuf[n].imag*sin(2*M_PI*k*n/N); 
 			result[k].real += inbuf[n] * cos(2*M_PI*k*n/N);
 			
 			//result[k].imag += inbuf[n].imag*cos(2*M_PI*k*n/N) - inbuf[n].real*sin(2*M_PI*k*n/N);  
@@ -83,18 +75,17 @@ void DFT(Int16 *inbuf, Int16 *outbuf, COMPLEX *result, Int16 length)
 
 void IDFT(COMPLEX *inbuf, Int16 *outbuf, COMPLEX *result, Int16 length)
 {
-    //COMPLEX result[BUFFSIZE];
-    Int16 k, n;
+	Int16 k, n;
     
-    for (n = 0; n < length; n++)
-    {
-        result[n].real = 0.0;    
+	for (n = 0; n < length; n++)
+	{
+		result[n].real = 0.0;    
 		result[n].imag = 0.0;
 		
 		for (k = 0; k < N; k++)
-	    {
+		{
 			result[n].real += (inbuf[k].real * cos(2*M_PI*k*n/N) - inbuf[k].imag * sin(2*M_PI*k*n/N)) / N;
-			
+		
 			result[n].imag += (inbuf[k].real * sin(2*M_PI*k*n/N) + inbuf[k].imag * cos(2*M_PI*k*n/N)) / N; 			 
 		}
 		
